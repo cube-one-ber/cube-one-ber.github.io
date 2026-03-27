@@ -3,11 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- The Native Apple Banner -->
-    <meta name="apple-itunes-app" content="app-id=1596516965?platform=ipad, app-argument=https://youtube.com">
-    <title>YouTube App Test</title>
+    <meta id="apple-banner" name="apple-itunes-app" content="">
+    <title>App Banner Tester</title>
+
+    <style>
+        body { font-family: -apple-system, sans-serif; text-align: center; padding: 50px 20px; line-height: 1.6; }
+        .input-box { 
+            margin-top: 20px; 
+            padding: 20px; 
+            border: 1px solid #ddd; 
+            border-radius: 12px; 
+            display: inline-block; 
+        }
+        input { padding: 10px; border-radius: 5px; border: 1px solid #ccc; width: 200px; }
+        button { padding: 10px 20px; background: #007AFF; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        .hidden { display: none; }
+    </style>
+
+    <script>
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const appId = urlParams.get('appid');
+            const banner = document.getElementById('apple-banner');
+            const status = document.getElementById('status');
+            const form = document.getElementById('input-area');
+
+            if (appId) {
+                // If ID is present, set the meta tag and hide the form
+                banner.setAttribute('content', `app-id=${appId}, app-argument=https://youtube.com`);
+                status.innerHTML = `<strong>Active Test:</strong> App ID ${appId}<br><small>Reload without the URL parameter to change.</small>`;
+                form.classList.add('hidden');
+            } else {
+                // If no ID, show the input box
+                status.innerText = "No App ID detected.";
+                form.classList.remove('hidden');
+            }
+        };
+
+        function reloadWithId() {
+            const id = document.getElementById('appIdInput').value.trim();
+            if (id) {
+                window.location.search = `?appid=${id}`;
+            }
+        }
+    </script>
 </head>
-<body style="font-family: sans-serif; text-align: center; padding-top: 50px;">
-    <h1>Exploit App Banner</h1>
+<body>
+
+    <h1>App Banner Tester</h1>
+    <p id="status">Checking URL parameters...</p>
+
+    <div id="input-area" class="input-box hidden">
+        <p>Enter an Apple App ID to test the banner:</p>
+        <input type="text" id="appIdInput" placeholder="e.g. 1596516965">
+        <button onclick="reloadWithId()">Test ID</button>
+    </div>
+
 </body>
 </html>
